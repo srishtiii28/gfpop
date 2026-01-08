@@ -1,43 +1,52 @@
-Assessment test implementations for the GSoC 2025 project: https://github.com/rstats-gsoc/gsoc2025/wiki/time-dependent-constraints-in-gfpop
+# GSoC 2025: Time-Dependent Constraints in gfpop
 
-## Tests Completed
+Assessment test implementation for the GSoC 2025 project: https://github.com/rstats-gsoc/gsoc2025/wiki/time-dependent-constraints-in-gfpop
 
-**Medium Test:** Poisson optimal partitioning
-**Hard Test:** Regularized isotonic regression
+## Test Completed
 
----
-
-## Medium Test: Poisson Optimal Partitioning
-
-### Approach
-Implemented a dynamic programming solver for optimal partitioning with Poisson loss:
-- Basic O(n²) algorithm with penalty-based regularization
-- FPOP-inspired pruning to improve efficiency
-- Validated against Segmentor3IsBack package
-
-### Running the Test
-```bash
-cd tests/medium_test
-Rscript test_poisson_partitioning.R
-```
-
-**Prerequisites:** `Segmentor3IsBack` package for validation
+**Hard Test:** Regularized isotonic regression with NormalLossPiece C++ class
 
 ---
 
-## Hard Test: Regularized Isotonic Regression
+## Hard Test: NormalLossPiece C++ Implementation
 
 ### Approach
-Implemented an isotonic regression solver with regularization:
-- Created `NormalLossPiece` R6 class for quadratic cost functions (A·μ² + B·μ + C)
-- Dynamic programming with isotonic constraints (non-decreasing means)
-- Min-envelope pruning for optimization
-- Validated against Pool Adjacent Violators (PAV) algorithm from `isotone` package
+Implemented a C++ class for Normal loss with quadratic cost functions:
+- Created `NormalLossPiece` class representing A·μ² + B·μ + C
+- Implemented required methods: `argmin()`, `getCost()`, `get_smaller_root()`, `get_larger_root()`
+- Built isotonic regression solver using dynamic programming
+- R interface via Rcpp for testing
+
+### Files
+
+**In `gfpop/src/`:**
+- `NormalLossPiece.h` and `NormalLossPiece.cpp` - Core class implementation
+- `IsotonicRegression.h` and `IsotonicRegression.cpp` - Solver implementation
+- `IsotonicInterface.cpp` - Rcpp interface
+- `Makevars` - Build configuration
+
+**Tests:**
+- `tests/hard_test_cpp/test_NormalLossPiece.R` - Test script
+- `tests/hard_test_cpp/HARD_TEST_CPP_SUMMARY.md` - Implementation details
 
 ### Running the Test
+
 ```bash
-cd tests/hard_test
-Rscript test_isotonic.R
+# Build and install the modified gfpop package
+cd gfpop
+R CMD INSTALL .
+
+# Run tests
+cd ../tests/hard_test_cpp
+Rscript test_NormalLossPiece.R
 ```
 
-**Prerequisites:** `R6`, `isotone` packages
+**Prerequisites:** `Rcpp`, `R6` packages
+
+---
+
+## Contact
+
+**Mentors:**
+- Vincent Runge (vincent.runge@univ-evry.fr)
+- Toby Dylan Hocking (tdhock5@gmail.com)
