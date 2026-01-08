@@ -1,5 +1,4 @@
 # Test script for set_to_unconstrained_min_of C++ implementation
-# GSoC 2025: Time-Dependent Constraints in gfpop - Medium Test
 
 library(PeakSegOptimal)
 
