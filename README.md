@@ -1,47 +1,71 @@
-# GSoC 2025: Time-Dependent Constraints in gfpop
+# Time-Dependent Constraints in gfpop
 
-Assessment test implementation for the GSoC 2025 project: https://github.com/rstats-gsoc/gsoc2025/wiki/time-dependent-constraints-in-gfpop
+C++ implementations for GSoC 2025 assessment tests: https://github.com/rstats-gsoc/gsoc2025/wiki/time-dependent-constraints-in-gfpop
 
-## Test Completed
+## Tests Completed
 
-**Hard Test:** Regularized isotonic regression with NormalLossPiece C++ class
+**Medium Test:** Unconstrained optimal partitioning with `set_to_unconstrained_min_of` method
+**Hard Test:** Regularized isotonic regression with `NormalLossPiece` C++ class
 
 ---
 
-## Hard Test: NormalLossPiece C++ Implementation
+## Medium Test: Unconstrained Optimal Partitioning
 
 ### Approach
-Implemented a C++ class for Normal loss with quadratic cost functions:
-- Created `NormalLossPiece` class representing A·μ² + B·μ + C
-- Implemented required methods: `argmin()`, `getCost()`, `get_smaller_root()`, `get_larger_root()`
-- Built isotonic regression solver using dynamic programming
-- R interface via Rcpp for testing
+Added `set_to_unconstrained_min_of` method to `PiecewisePoissonLossLog` class in PeakSegOptimal package:
+- Copies all cost function pieces without isotonic constraints
+- Enables standard changepoint detection without ordering constraints on segment means
+- Simpler than `set_to_min_less_of` and `set_to_min_more_of` constrained versions
 
 ### Files
 
-**In `gfpop/src/`:**
-- `NormalLossPiece.h` and `NormalLossPiece.cpp` - Core class implementation
-- `IsotonicRegression.h` and `IsotonicRegression.cpp` - Solver implementation
-- `IsotonicInterface.cpp` - Rcpp interface
+**In `PeakSegOptimal/src/`:**
+- `funPieceListLog.h` - Added method declaration
+- `funPieceListLog.cpp` - Method implementation
 - `Makevars` - Build configuration
 
-**Tests:**
-- `tests/hard_test_cpp/test_NormalLossPiece.R` - Test script
-- `tests/hard_test_cpp/HARD_TEST_CPP_SUMMARY.md` - Implementation details
+**Test:**
+- `tests/medium_test_cpp/test_unconstrained.R` - Demonstration script
 
 ### Running the Test
 
 ```bash
-# Build and install the modified gfpop package
+cd PeakSegOptimal
+R CMD INSTALL .
+cd ../tests/medium_test_cpp
+Rscript test_unconstrained.R
+```
+
+---
+
+## Hard Test: NormalLossPiece C++ Class
+
+### Approach
+Implemented C++ class for Normal loss with quadratic cost functions:
+- Created `NormalLossPiece` class representing A·μ² + B·μ + C
+- Implemented required methods: `argmin()`, `getCost()`, `get_smaller_root()`, `get_larger_root()`
+- Built isotonic regression solver using dynamic programming
+- R interface via Rcpp
+
+### Files
+
+**In `gfpop/src/`:**
+- `NormalLossPiece.h` and `NormalLossPiece.cpp` - Core class
+- `IsotonicRegression.h` and `IsotonicRegression.cpp` - Solver
+- `IsotonicInterface.cpp` - Rcpp interface
+- `Makevars` - Build configuration
+
+**Test:**
+- `tests/hard_test_cpp/test_NormalLossPiece.R` - Demonstration script
+
+### Running the Test
+
+```bash
 cd gfpop
 R CMD INSTALL .
-
-# Run tests
 cd ../tests/hard_test_cpp
 Rscript test_NormalLossPiece.R
 ```
-
-**Prerequisites:** `Rcpp`, `R6` packages
 
 ---
 
