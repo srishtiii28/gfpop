@@ -1,5 +1,4 @@
 # Test script for NormalLossPiece C++ implementation
-# GSoC 2025: Time-Dependent Constraints in gfpop - Hard Test
 
 library(gfpop)
 
@@ -35,9 +34,10 @@ cat("Output:", result4, "\n")
 cat("Is isotonic?", all(diff(result4) >= 0), "\n\n")
 
 cat("=== NormalLossPiece class successfully integrated ===\n")
-cat("Core functionality: IMPLEMENTED ✓\n")
+cat("Core functionality: IMPLEMENTED \n")
 cat("- Quadratic cost functions (A·μ² + B·μ + C)\n")
 cat("- argmin() method\n")
 cat("- getCost() method\n")
 cat("- get_smaller_root() and get_larger_root() methods\n")
 cat("- R interface via Rcpp\n")
+
